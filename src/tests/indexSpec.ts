@@ -1,5 +1,15 @@
-import { myFunc } from '../index';
+import app from '../index';
+import supertest from 'supertest';
 
-it('expect myFunc(5) to be 25', () => {
-  expect(myFunc(5)).toEqual(25);
+const request = supertest(app);
+
+describe('main endpoint test', () => {
+  it('gets the main endpoint with 200 status and text', async () => {
+    const response = await request.get('/api');
+
+    expect(response.status).toBe(200);
+    expect(response.text).toBe(
+      'Try /api/resize route with image name, width and height, example: /api/resize?image=fjord&width=300&height=500'
+    );
+  });
 });

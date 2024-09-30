@@ -8,7 +8,7 @@ export const resizeAndSaveImage = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   const { image, width, height } = getQueryParams(req);
 
   const imagePath = path.join(IMAGES_DIR, `${image}.jpg`);

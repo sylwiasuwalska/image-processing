@@ -8,7 +8,7 @@ export const checkQueryParams = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   const { image, width, height } = getQueryParams(req);
 
   if (!image || !width || !height) {
