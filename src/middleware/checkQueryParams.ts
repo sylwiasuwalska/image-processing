@@ -17,12 +17,14 @@ export const checkQueryParams = (
       .send(
         'Image name, width, and height must be provided and valid. Example: /api/resize?image=fjord&width=300&height=500'
       );
+    return;
   }
 
   const imagePath = path.join(IMAGES_DIR, `${image}.jpg`);
 
   if (!fs.existsSync(imagePath)) {
     res.status(404).send('Image not found.');
+    return;
   }
 
   next();

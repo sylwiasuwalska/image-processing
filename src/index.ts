@@ -11,5 +11,3 @@ app.listen(port, () => {
 });
 
 export default app;
-
-export const myFunc = (num: number) => num * 5;
