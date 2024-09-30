@@ -1,13 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
+import { getQueryParams } from '../helpers/getQueryParams';
 
 export const checkQueryParams = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const image = req.query.image as string;
-  const width = req.query.width as string;
-  const height = req.query.height as string;
+  const { image, width, height } = getQueryParams(req);
 
   if (!image || !width || !height) {
     res

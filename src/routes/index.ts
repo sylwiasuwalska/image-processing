@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import sharp from 'sharp';
 import { checkQueryParams } from '../middleware/checkQueryParams';
+import { getQueryParams } from '../helpers/getQueryParams';
 const routes = express.Router();
 
 const imagesDir = path.resolve(__dirname, '../../assets/full');
@@ -14,9 +15,7 @@ routes.get('/', (req, res) => {
 });
 
 routes.get('/resize', checkQueryParams, async (req: Request, res: Response) => {
-  const image = req.query.image as string;
-  const width = req.query.width as string;
-  const height = req.query.height as string;
+  const { image, width, height } = getQueryParams(req);
 
   const imagePath = path.join(imagesDir, `${image}.jpg`);
 
