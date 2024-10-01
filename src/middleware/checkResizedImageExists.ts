@@ -17,7 +17,6 @@ export const checkResizedImageExists = (
   if (fs.existsSync(resizedImagePath)) {
     res.sendFile(resizedImagePath);
   } else {
-    (req as any).resizedImagePath = resizedImagePath;
     next();
   }
 };
