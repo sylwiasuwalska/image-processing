@@ -9,6 +9,8 @@ describe('resizeAndSaveImage', () => {
   let res: Partial<Response>;
   let next: NextFunction;
 
+  let originalConsoleError: typeof console.error;
+
   beforeEach(() => {
     req = {
       query: {
