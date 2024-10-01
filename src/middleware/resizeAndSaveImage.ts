@@ -25,12 +25,10 @@ export const resizeAndSaveImage = async (
       `${resizedImageName}`
     );
 
-    // Ensure the resized directory exists
     if (!fs.existsSync(RESIZED_IMAGES_DIR)) {
       fs.mkdirSync(RESIZED_IMAGES_DIR, { recursive: true });
     }
 
-    // Save the resized image
     fs.writeFileSync(resizedImagePath, resizedImageBuffer);
 
     res.set('Content-Type', 'image/jpeg');
