@@ -34,7 +34,6 @@ export const resizeAndSaveImage = async (
     res.set('Content-Type', 'image/jpeg');
     res.send(resizedImageBuffer);
   } catch (error) {
-    console.error('Error resizing image:', error);
     res.status(500).send('Error resizing image.');
   }
 
