@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import sharp from 'sharp';
 import path from 'path';
 import { resizeAndSaveImage } from '../middleware/resizeAndSaveImage';
-import { IMAGES_DIR } from '../consts';
+import { FULL_IMAGES_DIR } from '../consts';
 
 describe('resizeAndSaveImage', () => {
   let req: Partial<Request>;
