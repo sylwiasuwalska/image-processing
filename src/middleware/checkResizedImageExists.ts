@@ -15,6 +15,7 @@ export const checkResizedImageExists = (
   const resizedImagePath = path.join(RESIZED_IMAGES_DIR, resizedImageName)
 
   if (fs.existsSync(resizedImagePath)) {
+    console.log('Cached image already exists.')
     res.sendFile(resizedImagePath)
   } else {
     next()

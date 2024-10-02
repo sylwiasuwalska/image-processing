@@ -28,7 +28,7 @@ export const resizeAndSaveImage = async (
     if (!fs.existsSync(RESIZED_IMAGES_DIR)) {
       fs.mkdirSync(RESIZED_IMAGES_DIR, { recursive: true })
     }
-
+    console.log('Saving new resized image.')
     fs.writeFileSync(resizedImagePath, resizedImageBuffer)
 
     res.set('Content-Type', 'image/jpeg')

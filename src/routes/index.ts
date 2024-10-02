@@ -2,6 +2,7 @@ import express, { Response } from 'express'
 import { checkQueryParams } from '../middleware/checkQueryParams'
 
 import { resizeAndSaveImage } from '../middleware/resizeAndSaveImage'
+import { checkResizedImageExists } from '../middleware/checkResizedImageExists'
 const routes = express.Router()
 
 routes.get('/', (_, res: Response) => {
@@ -10,6 +11,11 @@ routes.get('/', (_, res: Response) => {
   )
 })
 
-routes.get('/resize', checkQueryParams, resizeAndSaveImage)
+routes.get(
+  '/resize',
+  checkQueryParams,
+  checkResizedImageExists,
+  resizeAndSaveImage,
+)
 
 export default routes
