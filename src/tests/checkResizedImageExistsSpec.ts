@@ -5,6 +5,8 @@ import { Request, Response, NextFunction } from 'express';
 import { RESIZED_IMAGES_DIR } from '../consts';
 import { checkResizedImageExists } from '../middleware/checkResizedImageExists';
 
+type SendFileFunction = jasmine.Spy<(filePath: string) => void>;
+
 describe('checkResizedImageExists', () => {
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -18,7 +20,7 @@ describe('checkResizedImageExists', () => {
       },
     };
     res = {
-      sendFile: jasmine.createSpy('sendFile') as any,
+      sendFile: jasmine.createSpy('sendFile') as SendFileFunction,
     };
     next = jasmine.createSpy('next');
   });
@@ -42,9 +44,6 @@ describe('checkResizedImageExists', () => {
   });
 
   it('should call next callback when image does not exist', () => {
-    const resizedImageName = 'testImage-100x100.jpg';
-    const resizedImagePath = path.join(RESIZED_IMAGES_DIR, resizedImageName);
-
     mockFs({});
 
     checkResizedImageExists(req as Request, res as Response, next);

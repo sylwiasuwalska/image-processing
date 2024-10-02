@@ -3,7 +3,11 @@ import sharp from 'sharp';
 import path from 'path';
 import fs from 'fs';
 import { resizeAndSaveImage } from '../middleware/resizeAndSaveImage';
-import { FULL_IMAGES_DIR, RESIZED_IMAGES_DIR } from '../consts';
+import { RESIZED_IMAGES_DIR } from '../consts';
+
+interface ResizeReturnType {
+  toBuffer: jasmine.Spy<() => Promise<Buffer>>;
+}
 
 describe('resizeAndSaveImage', () => {
   let req: Partial<Request>;
@@ -30,11 +34,14 @@ describe('resizeAndSaveImage', () => {
 
   it('should resize the image and send the buffer', async () => {
     const mockBuffer = Buffer.from('mock image buffer');
-    spyOn(sharp.prototype, 'resize').and.returnValue({
+    const mockResizeReturnValue: ResizeReturnType = {
       toBuffer: jasmine
         .createSpy('toBuffer')
         .and.returnValue(Promise.resolve(mockBuffer)),
-    } as any);
+    };
+
+    spyOn(sharp.prototype, 'resize').and.returnValue(mockResizeReturnValue);
+
     await resizeAndSaveImage(req as Request, res as Response, next);
 
     expect(sharp.prototype.resize).toHaveBeenCalledWith(100, 100);
@@ -46,11 +53,15 @@ describe('resizeAndSaveImage', () => {
 
   it('should make dir and save the resized image to the correct path', async () => {
     const mockBuffer = Buffer.from('mock image buffer');
-    spyOn(sharp.prototype, 'resize').and.returnValue({
+
+    const mockResizeReturnValue: ResizeReturnType = {
       toBuffer: jasmine
         .createSpy('toBuffer')
         .and.returnValue(Promise.resolve(mockBuffer)),
-    } as any);
+    };
+
+    spyOn(sharp.prototype, 'resize').and.returnValue(mockResizeReturnValue);
+
     await resizeAndSaveImage(req as Request, res as Response, next);
 
     spyOn(fs, 'existsSync').and.returnValue(false);
@@ -75,11 +86,13 @@ describe('resizeAndSaveImage', () => {
   });
 
   it('should handle errors and send a 500 status', async () => {
-    spyOn(sharp.prototype, 'resize').and.returnValue({
+    const mockResizeReturnValue: ResizeReturnType = {
       toBuffer: jasmine
         .createSpy('toBuffer')
         .and.returnValue(Promise.reject(new Error('Test error'))),
-    } as any);
+    };
+
+    spyOn(sharp.prototype, 'resize').and.returnValue(mockResizeReturnValue);
     await resizeAndSaveImage(req as Request, res as Response, next);
 
     expect(sharp.prototype.resize).toHaveBeenCalledWith(100, 100);
@@ -88,7 +101,7 @@ describe('resizeAndSaveImage', () => {
 
     expect(
       (res.status as jasmine.Spy).calls.mostRecent().returnValue.send
-    ).toHaveBeenCalledWith('Error resizing image.');
+    ).toHaveBeenCalledWith('Error resizing image: Error: Test error');
     expect(next).toHaveBeenCalled();
   });
 });
